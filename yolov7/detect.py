@@ -175,6 +175,7 @@ def detect(source_path):
                     print(f" The image with the result is saved in: {save_path}")
             
             det_numpy = det.numpy()
+            # xmin, ymin, xmax, ymax, conf, cls
             print("detect numpy: ", det_numpy)
             landing_list = check_landing(det_numpy)
             print("\nlanding: ", landing_list, "\n")
