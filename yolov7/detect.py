@@ -168,9 +168,7 @@ def detect(source_path):
 
             # Save results (image with detections)
             if save_img:
-                print("\n gerek var mi?")
                 if dataset.mode == 'image':
-                    print("\nbence sadece bu!")
                     cv2.imwrite(save_path, im0)
                     print(f" The image with the result is saved in: {save_path}")
             
@@ -180,7 +178,8 @@ def detect(source_path):
             # [[        853         515         945         580     0.97341           0]
             # [        419         398         498         455     0.95355           0]
             # [        585         637         677         705     0.93958           0]]
-            # landing:  [-1, -1, -1]
+            # landing:  
+            # [-1, -1, -1]
             print("detect numpy: ", det_numpy)
             landing_list = check_landing(det_numpy)
             print("\nlanding: ", landing_list, "\n")
