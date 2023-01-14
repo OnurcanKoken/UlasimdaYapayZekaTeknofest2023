@@ -176,6 +176,11 @@ def detect(source_path):
             
             det_numpy = det.numpy()
             # xmin, ymin, xmax, ymax, conf, cls
+            # detect numpy: 
+            # [[        853         515         945         580     0.97341           0]
+            # [        419         398         498         455     0.95355           0]
+            # [        585         637         677         705     0.93958           0]]
+            # landing:  [-1, -1, -1]
             print("detect numpy: ", det_numpy)
             landing_list = check_landing(det_numpy)
             print("\nlanding: ", landing_list, "\n")
