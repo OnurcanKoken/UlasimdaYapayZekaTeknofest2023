@@ -4,6 +4,7 @@ class FramePredictions:
         self.image_url = image_url
         self.video_name = video_name
         self.detected_objects = []
+        self.frame_path = ""
 
     def add_detected_object(self, detection):
         self.detected_objects.append(detection)

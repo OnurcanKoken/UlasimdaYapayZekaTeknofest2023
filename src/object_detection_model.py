@@ -5,6 +5,7 @@ import requests
 
 from src.constants import classes, landing_statuses
 from src.detected_object import DetectedObject
+from yolov7.detect import detect_model
 
 
 class ObjectDetectionModel:
@@ -17,7 +18,7 @@ class ObjectDetectionModel:
         # self.model = get_keras_model() # Örnektir!
 
     @staticmethod
-    def download_image(img_url, images_folder):
+    def download_image(img_url, images_folder, prediction):
         t1 = time.perf_counter()
         img_bytes = requests.get(img_url).content
         image_name = img_url.split("/")[-1]  # frame_x.jpg
@@ -27,12 +28,13 @@ class ObjectDetectionModel:
 
         t2 = time.perf_counter()
 
+        prediction.frame_path = images_folder + image_name
         logging.info(f'{img_url} - Download Finished in {t2 - t1} seconds to {images_folder + image_name}')
 
-    def process(self, prediction,evaluation_server_url):
+    def process(self, prediction, evaluation_server_url):
         # Yarışmacılar resim indirme, pre ve post process vb işlemlerini burada gerçekleştirebilir.
         # Download image (Example)
-        self.download_image(evaluation_server_url + "media" + prediction.image_url, "./_images/")
+        self.download_image(evaluation_server_url + "media" + prediction.image_url, "./_images/", prediction)
         # Örnek: Burada OpenCV gibi bir tool ile preprocessing işlemi yapılabilir. (Tercihe Bağlı)
         # ...
         # Nesne tespiti modelinin bulunduğu fonksiyonun (self.detect() ) çağırılması burada olmalıdır.
@@ -42,19 +44,18 @@ class ObjectDetectionModel:
 
     def detect(self, prediction):
         # Modelinizle bu fonksiyon içerisinde tahmin yapınız.
-        # results = self.model.evaluate(...) # Örnektir.
-
+        detect_objets, landing = detect_model(prediction.frame_path)
         # Burada örnek olması amacıyla 20 adet tahmin yapıldığı simüle edilmiştir.
         # Yarışma esnasında modelin tahmin olarak ürettiği sonuçlar kullanılmalıdır.
         # Örneğin :
         # for i in results: # gibi
-        for i in range(1, 20):
-            cls = classes["UAP"],  # Tahmin edilen nesnenin sınıfı classes sözlüğü kullanılarak atanmalıdır.
-            landing_status = landing_statuses["Inilebilir"]  # Tahmin edilen nesnenin inilebilir durumu landing_statuses sözlüğü kullanılarak atanmalıdır.
-            top_left_x = 12 * i  # Örnek olması için rastgele değer atanmıştır. Modelin sonuçları kullanılmalıdır.
-            top_left_y = 12 * i  # Örnek olması için rastgele değer atanmıştır. Modelin sonuçları kullanılmalıdır.
-            bottom_right_x = 12 * i  # Örnek olması için rastgele değer atanmıştır. Modelin sonuçları kullanılmalıdır.
-            bottom_right_y = 12 * i  # Örnek olması için rastgele değer atanmıştır. Modelin sonuçları kullanılmalıdır.
+        for i, object in enumerate(detect_objets):
+            cls = int(object[5])
+            landing_status = landing[i]
+            top_left_x = object[0]
+            top_left_y = object[1]
+            bottom_right_x = object[2]
+            bottom_right_y = object[3]
 
             # Modelin tespit ettiği herbir nesne için bir DetectedObject sınıfına ait nesne oluşturularak
             # tahmin modelinin sonuçları parametre olarak verilmelidir.

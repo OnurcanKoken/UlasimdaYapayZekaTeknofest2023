@@ -13,7 +13,7 @@ class DetectedObject:
         self.bottom_right_y = bottom_right_y
 
     def create_payload(self, evaulation_server):
-        return {'cls': self.generate_api_url("classes/", str(int(self.cls[0]) + 1), evaulation_server),
+        return {'cls': self.generate_api_url("classes/", str(int(self.cls) + 1), evaulation_server),
                 'landing_status': str(self.landing_status),
                 'top_left_x': str(self.top_left_x),
                 'top_left_y': str(self.top_left_y),

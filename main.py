@@ -21,7 +21,7 @@ def configure_logger(team_name):
 def run():
     print("Started...")
     # Get configurations from .env file
-    config.search_path = "./config/"
+    config.search_path = "config/"
     team_name = config('TEAM_NAME')
     password = config('PASSWORD')
     evaluation_server_url = config("EVALUATION_SERVER_URL")
@@ -48,7 +48,7 @@ def run():
         predictions = FramePredictions(frame['url'], frame['image_url'], frame['video_name'])
         #print(predictions.image_url)
         # Run detection model
-        predictions = detection_model.process(predictions,evaluation_server_url)
+        predictions = detection_model.process(predictions, evaluation_server_url)
         # Send model predictions of this frame to the evaluation server
         result = server.send_prediction(predictions)
 
