@@ -46,7 +46,6 @@ def run():
     for frame in frames_json:
         # Create a prediction object to store frame info and detections
         predictions = FramePredictions(frame['url'], frame['image_url'], frame['video_name'])
-        #print(predictions.image_url)
         # Run detection model
         predictions = detection_model.process(predictions, evaluation_server_url)
         # Send model predictions of this frame to the evaluation server

@@ -3,15 +3,14 @@ import time
 
 import requests
 
-from src.constants import classes, landing_statuses
 from src.detected_object import DetectedObject
-from yolov7.detect import detect_model
+from utils.detect import Yolo
 
 
-class ObjectDetectionModel:
+class ObjectDetectionModel(Yolo):
     # Base class for team models
-
     def __init__(self, evaluation_server_url):
+        Yolo.__init__(self)
         logging.info('Created Object Detection Model')
         self.evaulation_server = evaluation_server_url
         # Modelinizi bu kısımda init edebilirsiniz.
@@ -44,7 +43,7 @@ class ObjectDetectionModel:
 
     def detect(self, prediction):
         # Modelinizle bu fonksiyon içerisinde tahmin yapınız.
-        detect_objets, landing = detect_model(prediction.frame_path)
+        detect_objets, landing = self.detect_model(prediction.frame_path)
         # Burada örnek olması amacıyla 20 adet tahmin yapıldığı simüle edilmiştir.
         # Yarışma esnasında modelin tahmin olarak ürettiği sonuçlar kullanılmalıdır.
         # Örneğin :
