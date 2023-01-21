@@ -16,9 +16,10 @@ class Yolo(object):
         self.trace = True
         self.save_txt = False
         self.save_conf = False
-        self.save_img = False  # save inference images
+        self.save_img = False   # save inference images
         self.opt_augment = False
         self.printable = False
+        self.plot = False       # draw detected bounding boxes on images
         self.imgsz = 640
         self.conf_thres = 0.25  # object confidence threshold
         self.iou_thres = 0.45
@@ -101,6 +102,19 @@ class Yolo(object):
                 landing_list.append(-1)
         return landing_list
 
+    def plot_one_box(x, img, label=None, line_thickness=3):
+        # Plots one bounding box on image img
+        tl = line_thickness or round(0.002 * (img.shape[0] + img.shape[1]) / 2) + 1  # line/font thickness
+        color = [100, 0, 100]
+        c1, c2 = (int(x[0]), int(x[1])), (int(x[2]), int(x[3]))
+        cv2.rectangle(img, c1, c2, color, thickness=tl, lineType=cv2.LINE_AA)
+        if label:
+            tf = max(tl - 1, 1)  # font thickness
+            t_size = cv2.getTextSize(label, 0, fontScale=tl / 3, thickness=tf)[0]
+            c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
+            cv2.rectangle(img, c1, c2, color, -1, cv2.LINE_AA)  # filled
+            cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+
     def detect_model(self, source_path):
         # Default detect
         det_numpy = np.empty([1, 1])
@@ -156,6 +170,11 @@ class Yolo(object):
                         for c in det[:, -1].unique():
                             n = (det[:, -1] == c).sum()  # detections per class
                             s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+                    # Add bbox to image
+                    if self.plot:
+                        for *xyxy, conf, cls in reversed(det):
+                            label = f'{names[int(cls)]} {conf:.2f}'
+                            self.plot_one_box(xyxy, im0, label=label, line_thickness=1)
 
                 # Print time (inference + NMS)
                 if self.printable:
