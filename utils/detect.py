@@ -21,7 +21,7 @@ class Yolo(object):
         self.printable = False
         self.plot = False       # draw detected bounding boxes on images
         self.imgsz = 640
-        self.conf_thres = 0.25  # object confidence threshold
+        self.conf_thres = 0.40  # object confidence threshold
         self.iou_thres = 0.45
 
         # Directories
