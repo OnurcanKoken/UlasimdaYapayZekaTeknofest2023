@@ -1,3 +1,29 @@
+# Artificial Intelligence in Transportation Competition
+
+In this competition, participants will be expected to detect objects using pre-recorded footage from a UAV (Unmanned Aerial Vehicle). The UAV will represent footage from an aircraft flying in low-altitude including flight maneuvers and images in focus. The footage that will be used for testing purposes during the competition will have been labeled beforehand, and the competitors will be scored for their accuracy of detection within the given time limit. These objects will be of detectable quality as they will be variations of objects available in the footage broadcast during the competition, sample videos and training videos. It should be considered that flying cars serve at night, during the day and in harsh weather conditions
+(rain, fog, snow)
+
+Tasks
+The competitors will detect objects using pre-recorded footage from a UAV (Unmanned Aerial Vehicle). 
+
+Types of Objects Subject to Detection
+The objects will be of detectable quality as they will be variations of objects available in the footage broadcast during the competition, sample videos and training videos. Types of objects subject to detection include:
+-    Vehicles (tasit) - class #0
+-    Humans (insan) - class #1
+-    Flying Car Parking (FCP/UAP) Area - class #2
+-    Landing Attitude of Flying Car Parking
+-    Flying Ambulance Landing (FAL/UAI) Area - class #3
+-    Landing Attitude of Flying Ambulance Landing
+
+# Dataset
+The dataset we have used is a custom dataset. Collected from previous competitions of Teknofest, people-on-grass, Visdrone. Total: 16606 labeled images are used.
+
+# Model
+YOLOv7.
+
+# Preprocessing
+Working on dehazing for foggy cases. It works nice but detection of the existance of foggy weather is a bit problem.
+
 # Yarışmacılar için Örnek Sunucu Bağlantı Arayüzü
 Bu repository Teknofest Ulaşımda Yapay Zeka yarışması değerlendirme sunucusuna(TUYZDS) örnek bağlantının kurulması için geliştirilmiştir.
 Yarışmacılar örnek arayüzü ihtiyaçlarına göre güncelleyebilir yada farklı bir dil ile (C++, vs) benzerini implemente edebilirler.
